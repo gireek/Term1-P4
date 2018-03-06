@@ -82,3 +82,12 @@ def dir_threshold(img, sobel_kernel=3, thresh=(0, np.pi/2)):
 
     # Return the binary image
     return binary_output
+
+# Apply each of the thresholding functions
+gradx = abs_sobel_thresh(image, orient='x', sobel_kernel=ksize, thresh=(0, 255))
+grady = abs_sobel_thresh(image, orient='y', sobel_kernel=ksize, thresh=(0, 255))
+mag_binary = mag_thresh(image, sobel_kernel=ksize, mag_thresh=(0, 255))
+dir_binary = dir_threshold(image, sobel_kernel=ksize, thresh=(0, np.pi/2))
+
+combined = np.zeros_like(dir_binary)
+combined[((gradx == 1) & (grady == 1)) | ((mag_binary == 1) & (dir_binary == 1))] = 1
